@@ -30,24 +30,27 @@ export default ({update, render, fps = 1000 / 60} = {}) => {
     render()
   }
 
-  return Object.create({
-    start: () => {
-      state.mode = 'playing'
-      state.startTime = new Date().getTime()
-      state.timeSinceLastUpdate = 0
-      tick(0)
-      return this
-    },
-    stop: () => {
-      state.mode = 'stopped'
-      return this
-    },
-    pause: () => {
-      state.mode = 'paused'
-      return this
-    },
-    getState: () => {
-      return state.mode
-    }
-  })
+  const loop = {}
+
+  loop.start = () => {
+    state.mode = 'playing'
+    state.startTime = new Date().getTime()
+    state.timeSinceLastUpdate = 0
+    tick(0)
+    return loop
+  }
+
+  loop.stop = () => {
+    state.mode = 'stopped'
+    return loop
+  }
+
+  loop.pause = () => {
+    state.mode = 'paused'
+    return loop
+  }
+
+  loop.getState = () => state.mode
+
+  return loop
 }
