@@ -1,0 +1,5 @@
+TODO
+
+- create a backgorund layer of random tiles
+- render the positions of the camera on the background layer
+- set bounderies on the camera (or wrap)
