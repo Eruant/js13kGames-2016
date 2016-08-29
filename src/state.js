@@ -1,38 +1,55 @@
+import mobFactory from './mob'
 import cameraActions from './camera'
 import mapFactory from './map'
+import ioFactory from './io'
 
-export default ({ctx, canvas}) => {
+export default ({screen}) => {
   const map = mapFactory()
 
-  // make a canvas to pre-render to
   const background = {
     canvas: window.document.createElement('canvas'),
     tileMap: map.generateMap({
-      width: 100,
-      height: 100
+      width: 300,
+      height: 150
     })
+  }
+
+  const mobs = {
+    canvas: window.document.createElement('canvas'),
+    mobs: [
+      mobFactory({
+        position: {
+          x: 0,
+          y: 0
+        }
+      })
+    ]
   }
 
   map.renderMap(background)
 
-  const layers = [background]
+  mobs.canvas.width = background.canvas.width
+  mobs.canvas.height = background.canvas.height
 
-  const camera = Object.assign({}, cameraActions(), {
+  const layers = {
+    background,
+    mobs
+  }
+
+  const camera = cameraActions({
     position: {
-      x: canvas.getWidth() * 0.5,
-      y: canvas.getHeight() * 0.5
-    },
-    speed: {
-      x: 2,
-      y: 2
+      x: screen.getWidth() * 0.5,
+      y: screen.getHeight() * 0.5
     }
   })
 
+  const io = ioFactory()
+
   return {
-    ctx,
-    canvas,
+    screen,
     camera,
     map,
-    layers
+    layers,
+    io
   }
 }

@@ -4,15 +4,14 @@ import updateFactory from './update'
 import renderFactory from './render'
 import stateFactory from './state'
 
-const canvas = canvasFactory()
-const ctx = canvas.getContext()
+const screen = canvasFactory()
 
-canvas.setSize({
+screen.setSize({
   width: 600,
   height: 400
 })
 
-const state = stateFactory({ctx, canvas})
+const state = stateFactory({screen})
 
 const update = updateFactory(state)
 const render = renderFactory(state)

@@ -1,24 +1,67 @@
-export default ({ctx, canvas, camera, layers, map}) => {
+export default ({screen, camera, layers, map, player}) => {
+  const screenContext = screen.getContext('2d')
+
+  const drawLayer = ({canvas}) => {
+    const viewBox = camera.currentView(camera.position, screen)
+
+    screenContext.drawImage(
+      canvas,
+      viewBox.x,
+      viewBox.y,
+      viewBox.width,
+      viewBox.height,
+      0,
+      0,
+      screen.getWidth(),
+      screen.getHeight()
+    )
+  }
+
   return () => {
-    ctx.fillStyle = 'hsl(0, 100%, 50%)'
-    ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight())
+    // - draw mobs layer to memory ---------------------------------------------
+    const mobs = layers.mobs.mobs
+    const mobCanvas = layers.mobs.canvas
+    const mobContext = mobCanvas.getContext('2d')
 
-    const viewBox = camera.currentView(camera.position, canvas)
-
-    layers.forEach(layer => {
-      ctx.drawImage(
-        layer.canvas,
-        viewBox.x,
-        viewBox.y,
-        viewBox.width,
-        viewBox.height,
-        0,
-        0,
-        canvas.getWidth(),
-        canvas.getHeight()
-      )
-
-      // ctx.drawImage(layer.canvas, -camera.position.x, -camera.position.y)
+    // clear previous position
+    mobs.forEach(mob => {
+      mobContext.clearRect(mob.previousPosition.x, mob.previousPosition.y, 32, 32)
     })
+
+    mobs.forEach(mob => {
+      mobContext.fillStyle = '#333'
+      mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
+      mobContext.fillStyle = '#fff'
+      switch (mob.direction) {
+        case 'NORTH':
+          mobContext.fillRect(mob.position.x + 14, mob.position.y, 4, 4)
+          break
+        case 'SOUTH':
+          mobContext.fillRect(mob.position.x + 14, mob.position.y + 28, 4, 4)
+          break
+        case 'WEST':
+          mobContext.fillRect(mob.position.x, mob.position.y + 14, 4, 4)
+          break
+        case 'EAST':
+          mobContext.fillRect(mob.position.x + 28, mob.position.y + 14, 4, 4)
+          break
+        case 'NORTH-WEST':
+          mobContext.fillRect(mob.position.x, mob.position.y, 4, 4)
+          break
+        case 'NORTH-EAST':
+          mobContext.fillRect(mob.position.x + 28, mob.position.y, 4, 4)
+          break
+        case 'SOUTH-WEST':
+          mobContext.fillRect(mob.position.x, mob.position.y + 28, 4, 4)
+          break
+        case 'SOUTH-EAST':
+          mobContext.fillRect(mob.position.x + 28, mob.position.y + 28, 4, 4)
+          break
+      }
+    })
+
+    // - draw to screen
+    drawLayer(layers.background)
+    drawLayer(layers.mobs)
   }
 }

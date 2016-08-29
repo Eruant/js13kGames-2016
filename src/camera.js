@@ -1,4 +1,4 @@
-export default () => {
+export default ({position}) => {
   const isValidPosition = (obj) => (
     typeof obj === 'object' &&
     obj.hasOwnProperty('x') &&
@@ -40,8 +40,13 @@ export default () => {
     }
   }
 
-  return {
+  return Object.create({
     currentView,
-    move
-  }
+    move,
+    position,
+    speed: {
+      x: 0,
+      y: 0
+    }
+  })
 }
