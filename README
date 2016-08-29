@@ -1,5 +1,10 @@
 TODO
 
-- create a backgorund layer of random tiles
-- render the positions of the camera on the background layer
-- set bounderies on the camera (or wrap)
+- create an underground layer
+- randomise the background layer
+- rename background layer to surface
+
+Current game idea:
+You did a hole to find the tresure
+Once you dig a hole you get a number letting you know how many blocks away you are
+Underground mobs will appear from holes over time

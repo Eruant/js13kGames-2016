@@ -1,3 +1,5 @@
+// next task: when performing an action, stop all other movement until completed
+
 export default ({position}) => {
   const isValidPosition = (obj) => (
     typeof obj === 'object' &&
@@ -33,16 +35,33 @@ export default ({position}) => {
     }
   }
 
+  const setAction = ({type}) => {
+    let stepsToComplete
+
+    switch (type) {
+      case 'DIG':
+        stepsToComplete = 60
+        break
+    }
+
+    return {
+      type,
+      stepsToComplete
+    }
+  }
+
   return Object.create({
     move,
     position,
     setTargetPosition,
+    setAction,
     speed: {
       x: 0,
       y: 0
     },
     previousPosition: Object.assign({}, position),
     targetPosition: Object.assign({}, position),
-    direction: 'EAST'
+    direction: 'EAST',
+    action: null
   })
 }

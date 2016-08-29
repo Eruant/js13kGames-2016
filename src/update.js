@@ -25,7 +25,8 @@ export default ({screen, camera, layers, io}) => {
     if (
       player.speed.x === 0 &&
       player.speed.y === 0 &&
-      (input.direction.x !== 0 || input.direction.y !== 0)
+      (input.direction.x !== 0 || input.direction.y !== 0) &&
+      player.action === null
     ) {
       player.targetPosition = player.setTargetPosition({
         currentPosition: player.position,
@@ -73,6 +74,22 @@ export default ({screen, camera, layers, io}) => {
     } else if (player.position.y + 32 > layers.mobs.canvas.height) {
       player.position.y = layers.mobs.canvas.height - 32
       player.targetPosition.y = player.position.y
+    }
+
+    if (player.action === null && input.action) {
+      player.action = player.setAction({type: 'DIG'})
+    }
+
+    if (player.action) {
+      if (player.action.stepsToComplete > 0) {
+        player.action.stepsToComplete--
+      } else {
+        // TODO complete a better dig action (possibly clear rect with layer below?)
+        let backgroundContext = layers.background.canvas.getContext('2d')
+        backgroundContext.fillStyle = '#000'
+        backgroundContext.fillRect(player.position.x, player.position.y, 32, 32)
+        player.action = null
+      }
     }
 
     // - Camera ----------------------------------------------------------------#

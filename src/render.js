@@ -29,6 +29,12 @@ export default ({screen, camera, layers, map, player}) => {
     })
 
     mobs.forEach(mob => {
+      if (mob.action) {
+        mobContext.fillStyle = '#f66'
+        mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
+        return
+      }
+
       mobContext.fillStyle = '#333'
       mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
       mobContext.fillStyle = '#fff'
