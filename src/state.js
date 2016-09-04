@@ -23,7 +23,7 @@ export default ({screen}) => {
     }
   }
 
-  const background = {
+  const surface = {
     canvas: window.document.createElement('canvas'),
     tileMap: map.generateMap({
       width: 300,
@@ -53,16 +53,16 @@ export default ({screen}) => {
     particles.particles[i] = null
   }
 
-  map.renderMap(background)
+  map.renderMap(surface)
 
-  mobs.canvas.width = background.canvas.width
-  mobs.canvas.height = background.canvas.height
-  particles.canvas.width = background.canvas.width
-  particles.canvas.height = background.canvas.height
+  mobs.canvas.width = surface.canvas.width
+  mobs.canvas.height = surface.canvas.height
+  particles.canvas.width = surface.canvas.width
+  particles.canvas.height = surface.canvas.height
 
   const layers = {
     underground,
-    background,
+    surface,
     mobs,
     particles
   }

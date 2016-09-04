@@ -107,8 +107,8 @@ export default ({screen, camera, layers, io}) => {
         }
         player.action.stepsToComplete--
       } else {
-        let backgroundContext = layers.background.canvas.getContext('2d')
-        backgroundContext.clearRect(player.position.x, player.position.y, 32, 32)
+        let surfaceContext = layers.surface.canvas.getContext('2d')
+        surfaceContext.clearRect(player.position.x, player.position.y, 32, 32)
         player.action = null
       }
     }
@@ -144,13 +144,13 @@ export default ({screen, camera, layers, io}) => {
 
     const nextCameraPosition = camera.move(camera.position, camera.speed)
 
-    if (nextCameraPosition.x > layers.background.canvas.width - (screen.getWidth() * 0.5)) {
+    if (nextCameraPosition.x > layers.surface.canvas.width - (screen.getWidth() * 0.5)) {
       camera.speed.x = 0
     } else if (nextCameraPosition.x < screen.getWidth() * 0.5) {
       camera.speed.x = 0
     }
 
-    if (nextCameraPosition.y > layers.background.canvas.height - (screen.getHeight() * 0.5)) {
+    if (nextCameraPosition.y > layers.surface.canvas.height - (screen.getHeight() * 0.5)) {
       camera.speed.y = 0
     } else if (nextCameraPosition.y < screen.getHeight() * 0.5) {
       camera.speed.y = 0

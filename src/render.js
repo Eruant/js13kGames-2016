@@ -91,7 +91,7 @@ export default ({screen, camera, layers, map, player}) => {
 
     // - draw to screen
     screenContext.drawImage(layers.underground.canvas, 0, 0)
-    drawLayer(layers.background)
+    drawLayer(layers.surface)
     drawLayer(layers.mobs)
     drawLayer(layers.particles)
   }
