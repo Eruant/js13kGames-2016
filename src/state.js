@@ -6,6 +6,23 @@ import ioFactory from './io'
 export default ({screen}) => {
   const map = mapFactory()
 
+  const underground = {
+    canvas: window.document.createElement('canvas')
+  }
+
+  underground.canvas.width = screen.getWidth()
+  underground.canvas.height = screen.getHeight()
+
+  const undergroundContext = underground.canvas.getContext('2d')
+
+  const pixelSize = 8
+  for (let y = 0, yLen = screen.getHeight() / pixelSize; y < yLen; y++) {
+    for (let x = 0, xLen = screen.getWidth() / pixelSize; x < xLen; x++) {
+      undergroundContext.fillStyle = `hsl(50, 100%, ${Math.floor(Math.random() * 20)}%)`
+      undergroundContext.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize)
+    }
+  }
+
   const background = {
     canvas: window.document.createElement('canvas'),
     tileMap: map.generateMap({
@@ -44,6 +61,7 @@ export default ({screen}) => {
   particles.canvas.height = background.canvas.height
 
   const layers = {
+    underground,
     background,
     mobs,
     particles

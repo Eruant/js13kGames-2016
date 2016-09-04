@@ -1,8 +1,15 @@
 TODO
 
-- create an underground layer
-- randomise the background layer
 - rename background layer to surface
+- pick a place for tresure to be
+- give feedback on where tresure is (after digging a hole)
+- create mobs the come out of holes
+- add ability to attack mobs
+- make mobs attack player
+- allow player to fall into holes
+- add start screem
+- add end screen
+- add sfx
 
 Current game idea:
 You did a hole to find the tresure

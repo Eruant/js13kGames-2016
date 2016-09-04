@@ -107,10 +107,8 @@ export default ({screen, camera, layers, io}) => {
         }
         player.action.stepsToComplete--
       } else {
-        // TODO complete a better dig action (possibly clear rect with layer below?)
         let backgroundContext = layers.background.canvas.getContext('2d')
-        backgroundContext.fillStyle = '#000'
-        backgroundContext.fillRect(player.position.x, player.position.y, 32, 32)
+        backgroundContext.clearRect(player.position.x, player.position.y, 32, 32)
         player.action = null
       }
     }
