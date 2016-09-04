@@ -1,3 +1,5 @@
+import particleFactory from './particle'
+
 export default ({screen, camera, layers, io}) => {
   return () => {
     // - Player ----------------------------------------------------------------
@@ -82,6 +84,27 @@ export default ({screen, camera, layers, io}) => {
 
     if (player.action) {
       if (player.action.stepsToComplete > 0) {
+        if (Math.random() > 0.6) {
+          const particle = particleFactory({
+            position: {
+              x: player.position.x + 16,
+              y: player.position.y + 16,
+              z: 1
+            },
+            speed: {
+              x: Math.random() * 10 - 5,
+              y: Math.random() * 10 - 5,
+              z: 50
+            },
+            color: `hsla(50, 100%, ${Math.floor(Math.random() * 100)}%, 0.8)`
+          })
+          for (let i = 0, len = 20; i < len; i++) {
+            if (layers.particles.particles[i] === null) {
+              layers.particles.particles[i] = particle
+              break
+            }
+          }
+        }
         player.action.stepsToComplete--
       } else {
         // TODO complete a better dig action (possibly clear rect with layer below?)
@@ -91,6 +114,31 @@ export default ({screen, camera, layers, io}) => {
         player.action = null
       }
     }
+
+    // - Particles -------------------------------------------------------------#
+    layers.particles.particles.forEach((particle, index) => {
+      if (particle === null) {
+        return
+      }
+
+      // calculate gravity
+      // particle.speed = particle.gravity(particle.speed)
+      particle.speed = {
+        x: particle.speed.x * 0.8,
+        y: particle.speed.y * 0.8,
+        z: (particle.speed.z * 0.8) - 1
+      }
+
+      // calculate new position
+      particle.position = particle.move({
+        currentPosition: particle.position,
+        speed: particle.speed
+      })
+
+      if (particle.position.z < 0) {
+        layers.particles.particles[index] = null
+      }
+    })
 
     // - Camera ----------------------------------------------------------------#
     camera.speed.x = (player.position.x - camera.position.x) * 1

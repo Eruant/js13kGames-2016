@@ -26,14 +26,27 @@ export default ({screen}) => {
     ]
   }
 
+  const particles = {
+    canvas: window.document.createElement('canvas'),
+    particles: []
+  }
+
+  // initialize particle array will null values
+  for (let i = 0, len = 20; i < len; i++) {
+    particles.particles[i] = null
+  }
+
   map.renderMap(background)
 
   mobs.canvas.width = background.canvas.width
   mobs.canvas.height = background.canvas.height
+  particles.canvas.width = background.canvas.width
+  particles.canvas.height = background.canvas.height
 
   const layers = {
     background,
-    mobs
+    mobs,
+    particles
   }
 
   const camera = cameraActions({

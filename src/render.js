@@ -66,8 +66,32 @@ export default ({screen, camera, layers, map, player}) => {
       }
     })
 
+    // - draw particles to memory ----------------------------------------------
+    const particles = layers.particles.particles
+    const particlesCanvas = layers.particles.canvas
+    const particlesContext = particlesCanvas.getContext('2d')
+
+    particlesCanvas.width = particlesCanvas.width
+    particles.forEach(particle => {
+      if (particle === null) {
+        return
+      }
+
+      const size = particle.position.z * 0.1
+      const halfSize = size * 0.5
+
+      particlesContext.fillStyle = particle.color
+      particlesContext.fillRect(
+        particle.position.x - halfSize,
+        particle.position.y - halfSize,
+        size,
+        size
+      )
+    })
+
     // - draw to screen
     drawLayer(layers.background)
     drawLayer(layers.mobs)
+    drawLayer(layers.particles)
   }
 }
