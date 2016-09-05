@@ -23,11 +23,14 @@ export default ({screen}) => {
     }
   }
 
+  const tileWidth = 300
+  const tileHeight = 150
+
   const surface = {
     canvas: window.document.createElement('canvas'),
     tileMap: map.generateMap({
-      width: 300,
-      height: 150
+      width: tileWidth,
+      height: tileHeight
     })
   }
 
@@ -53,6 +56,14 @@ export default ({screen}) => {
     particles.particles[i] = null
   }
 
+  const treasure = {
+    position: {
+      x: Math.floor(Math.random() * tileWidth),
+      y: Math.floor(Math.random() * tileHeight)
+    },
+    lastGuess: null
+  }
+
   map.renderMap(surface)
 
   mobs.canvas.width = surface.canvas.width
@@ -64,7 +75,8 @@ export default ({screen}) => {
     underground,
     surface,
     mobs,
-    particles
+    particles,
+    treasure
   }
 
   const camera = cameraActions({

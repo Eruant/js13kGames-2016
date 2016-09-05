@@ -107,6 +107,30 @@ export default ({screen, camera, layers, io}) => {
         }
         player.action.stepsToComplete--
       } else {
+        const treasurePosition = layers.treasure.position
+        const playerPositionX = Math.floor(player.position.x / 32)
+        const playerPositionY = Math.floor(player.position.y / 32)
+        const playerTileX = Math.abs(treasurePosition.x - playerPositionX)
+        const playerTileY = Math.abs(treasurePosition.y - playerPositionY)
+        const distanceAway = playerTileX + playerTileY
+
+        const lastGuess = layers.treasure.lastGuess
+
+        if (lastGuess !== null) {
+          if (lastGuess < distanceAway) {
+            // TODO add hud cooler
+          } else if (lastGuess > distanceAway) {
+            // TODO add hud warmer
+          } else {
+            // TODO add hud same
+          }
+        }
+
+        if (distanceAway === 0) {
+          // trigger win sequence
+        }
+
+        layers.treasure.lastGuess = distanceAway
         let surfaceContext = layers.surface.canvas.getContext('2d')
         surfaceContext.clearRect(player.position.x, player.position.y, 32, 32)
         player.action = null
