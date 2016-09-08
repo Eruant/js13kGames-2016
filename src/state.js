@@ -51,7 +51,7 @@ export default ({screen}) => {
     particles: []
   }
 
-  // initialize particle array will null values
+  // initialize particle array with null values
   for (let i = 0, len = 20; i < len; i++) {
     particles.particles[i] = null
   }
@@ -64,19 +64,32 @@ export default ({screen}) => {
     lastGuess: null
   }
 
+  const hud = {
+    canvas: window.document.createElement('canvas'),
+    elements: []
+  }
+
+  // initialize hud array with null values
+  for (let i = 0, len = 20; i < len; i++) {
+    hud.elements[i] = null
+  }
+
   map.renderMap(surface)
 
   mobs.canvas.width = surface.canvas.width
   mobs.canvas.height = surface.canvas.height
   particles.canvas.width = surface.canvas.width
   particles.canvas.height = surface.canvas.height
+  hud.canvas.width = surface.canvas.width
+  hud.canvas.height = surface.canvas.height
 
   const layers = {
     underground,
     surface,
     mobs,
     particles,
-    treasure
+    treasure,
+    hud
   }
 
   const camera = cameraActions({

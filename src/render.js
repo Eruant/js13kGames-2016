@@ -89,10 +89,56 @@ export default ({screen, camera, layers, map, player}) => {
       )
     })
 
+    // - draw hud to memory ----------------------------------------------------
+    const hudElements = layers.hud.elements
+    const hudCanvas = layers.hud.canvas
+    const hudContext = hudCanvas.getContext('2d')
+
+    hudContext.clearRect(
+      mobs[0].position.x - 100,
+      mobs[0].position.y - 100,
+      232,
+      232
+    )
+
+    hudElements.forEach(element => {
+      if (element === null) {
+        return
+      }
+
+      const size = (100 - element.lifeRemaining) * 0.25 + 32
+      const halfSize = size * 0.5
+      const opacity = element.lifeRemaining * 0.01
+
+      let strokeStyle = `hsla(0, 100%, 100%, ${opacity})`
+
+      switch (element.type) {
+        case 'status-warmer':
+          strokeStyle = `hsla(0, 100%, 70%, ${opacity})`
+          break
+        case 'status-cooler':
+          strokeStyle = `hsla(240, 100%, 70%, ${opacity})`
+          break
+        case 'status-found':
+          strokeStyle = `hsla(60, 100%, 50%, ${opacity})`
+          break
+      }
+
+      hudContext.strokeStyle = strokeStyle
+      hudContext.lineWidth = 8
+      hudContext.strokeRect(
+          element.position.x + 16 - halfSize,
+          element.position.y + 16 - halfSize,
+          size,
+          size
+      )
+    })
+
     // - draw to screen
     screenContext.drawImage(layers.underground.canvas, 0, 0)
     drawLayer(layers.surface)
     drawLayer(layers.mobs)
     drawLayer(layers.particles)
+    drawLayer(layers.hud)
   }
 }

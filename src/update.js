@@ -1,4 +1,5 @@
 import particleFactory from './particle'
+import hudFactory from './hud'
 
 export default ({screen, camera, layers, io}) => {
   return () => {
@@ -117,17 +118,60 @@ export default ({screen, camera, layers, io}) => {
         const lastGuess = layers.treasure.lastGuess
 
         if (lastGuess !== null) {
+          let hud
+
           if (lastGuess < distanceAway) {
-            // TODO add hud cooler
+            hud = hudFactory({
+              type: 'status-cooler',
+              position: {
+                x: player.position.x,
+                y: player.position.y
+              }
+            })
           } else if (lastGuess > distanceAway) {
-            // TODO add hud warmer
-          } else {
-            // TODO add hud same
+            hud = hudFactory({
+              type: 'status-warmer',
+              position: {
+                x: player.position.x,
+                y: player.position.y
+              }
+            })
+          } else if (distanceAway !== 0) {
+            hud = hudFactory({
+              type: 'status-same',
+              position: {
+                x: player.position.x,
+                y: player.position.y
+              }
+            })
+          }
+
+          for (let i = 0, len = 20; i < len; i++) {
+            if (layers.hud.elements[i] === null) {
+              layers.hud.elements[i] = hud
+              break
+            }
           }
         }
 
         if (distanceAway === 0) {
-          // trigger win sequence
+          let hud = hudFactory({
+              type: 'status-win',
+              position: {
+                x: player.position.x,
+                y: player.position.y
+              }
+            })
+
+           for (let i = 0, len = 20; i < len; i++) {
+            if (layers.hud.elements[i] === null) {
+              layers.hud.elements[i] = hud
+              break
+            }
+          }
+
+          // TODO win sequence
+          console.log('You win')
         }
 
         layers.treasure.lastGuess = distanceAway
@@ -160,6 +204,15 @@ export default ({screen, camera, layers, io}) => {
       if (particle.position.z < 0) {
         layers.particles.particles[index] = null
       }
+    })
+
+    // - Hud -------------------------------------------------------------------#
+    layers.hud.elements.forEach((element, index) => {
+      if (element === null) {
+        return
+      }
+
+      layers.hud.elements[index] = element.cycle(element)
     })
 
     // - Camera ----------------------------------------------------------------#
