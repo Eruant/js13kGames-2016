@@ -25,7 +25,7 @@ export default ({screen, camera, layers, map, player}) => {
 
     // clear previous position
     mobs.forEach(mob => {
-      mobContext.clearRect(mob.previousPosition.x, mob.previousPosition.y, 32, 32)
+      mobContext.clearRect(mob.previousPosition.x - 32, mob.previousPosition.y - 32, 64, 64)
     })
 
     mobs.forEach(mob => {
@@ -35,8 +35,10 @@ export default ({screen, camera, layers, map, player}) => {
         return
       }
 
-      mobContext.fillStyle = '#333'
-      mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
+      mobContext.drawImage(mob.image, 0, 0, 8, 32, mob.position.x + 8, mob.position.y - 32, 16, 64)
+
+      // mobContext.fillStyle = '#333'
+      // mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
       mobContext.fillStyle = '#fff'
       switch (mob.direction) {
         case 'NORTH':

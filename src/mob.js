@@ -1,6 +1,6 @@
 // next task: when performing an action, stop all other movement until completed
 
-export default ({position}) => {
+export default ({position, image}) => {
   const isValidPosition = (obj) => (
     typeof obj === 'object' &&
     obj.hasOwnProperty('x') &&
@@ -51,6 +51,7 @@ export default ({position}) => {
   }
 
   return Object.create({
+    image,
     move,
     position,
     setTargetPosition,

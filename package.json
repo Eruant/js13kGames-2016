@@ -2,19 +2,10 @@
   "name": "js13kgames-2016",
   "version": "0.0.1",
   "scripts": {
-    "clean": "rm -f archive.zip && rm -rf test",
-    "prebuild": "npm run clean && mkdir -p temp",
-    "build": "npm run build:markup && npm run build:scripts && npm run build:archive",
-    "build:markup": "jade < src/index.jade > temp/index.html",
-    "build:scripts": "rollup -c",
-    "build:archive": "zip -rj archive temp/*",
-    "postbuild": "node checkSize.js",
-    "prestart": "npm run build",
+    "prestart": "./build.sh build",
     "start": "npm run localhost & npm run watch",
     "localhost": "browser-sync start --server temp --files temp",
-    "watch": "npm run watch:markup & npm run watch:scripts",
-    "watch:markup": "nodemon -e jade --ignore temp -x \"npm run build:markup\"",
-    "watch:scripts": "nodemon -e js --ignore temp -x \"npm run build:scripts && node checkSize.js\""
+    "watch": "./build.sh watch"
   },
   "devDependencies": {
     "babel-preset-es2015-rollup": "1.2.0",

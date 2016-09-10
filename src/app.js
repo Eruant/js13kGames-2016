@@ -11,9 +11,17 @@ screen.setSize({
   height: 400
 })
 
-const state = stateFactory({screen})
+const heroImage = window.document.createElement('img')
+heroImage.src = 'hero.png'
+
+const state = stateFactory({screen, heroImage})
 
 const update = updateFactory(state)
 const render = renderFactory(state)
 
-loop({update, render}).start()
+const game = loop({update, render})
+
+heroImage.onload = () => {
+  game.start()
+}
+

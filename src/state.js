@@ -3,7 +3,12 @@ import cameraActions from './camera'
 import mapFactory from './map'
 import ioFactory from './io'
 
-export default ({screen}) => {
+const removeSmoothing = (canvas) => {
+  const ctx = canvas.getContext('2d')
+  ctx.imageSmoothingEnabled = false
+}
+
+export default ({screen, heroImage}) => {
   const map = mapFactory()
 
   const underground = {
@@ -41,7 +46,8 @@ export default ({screen}) => {
         position: {
           x: 0,
           y: 0
-        }
+        },
+        image: heroImage
       })
     ]
   }
@@ -91,6 +97,12 @@ export default ({screen}) => {
     treasure,
     hud
   }
+
+  removeSmoothing(layers.underground.canvas)
+  removeSmoothing(layers.surface.canvas)
+  removeSmoothing(layers.mobs.canvas)
+  removeSmoothing(layers.particles.canvas)
+  removeSmoothing(layers.hud.canvas)
 
   const camera = cameraActions({
     position: {
