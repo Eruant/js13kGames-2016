@@ -1,7 +1,7 @@
 import particleFactory from './particle'
 import hudFactory from './hud'
 
-export default ({screen, camera, layers, io}) => {
+export default ({screen, camera, layers, io, endFunction, attempts}) => {
   return () => {
     // - Player ----------------------------------------------------------------
     // const [player, ...mobs] = layers.mobs.mobs
@@ -117,6 +117,7 @@ export default ({screen, camera, layers, io}) => {
         }
         player.action.stepsToComplete--
       } else {
+        attempts += 1
         const treasurePosition = layers.treasure.position
         const playerPositionX = Math.floor(player.position.x / 32)
         const playerPositionY = Math.floor(player.position.y / 32)
@@ -179,8 +180,7 @@ export default ({screen, camera, layers, io}) => {
             }
           }
 
-          // TODO win sequence
-          console.log('You win')
+          endFunction(attempts)
         }
 
         layers.treasure.lastGuess = distanceAway

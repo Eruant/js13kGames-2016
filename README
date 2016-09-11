@@ -1,14 +1,10 @@
 TODO
 
+Min
+- allow player to fall into holes
+- add sfx
+
+Nice to have
 - create mobs the come out of holes
 - add ability to attack mobs
 - make mobs attack player
-- allow player to fall into holes
-- add start screen
-- add end screen
-- add sfx
-
-Current game idea:
-You did a hole to find the tresure
-Once you dig a hole you get a number letting you know how many blocks away you are
-Underground mobs will appear from holes over time

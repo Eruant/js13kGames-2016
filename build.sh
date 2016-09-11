@@ -9,7 +9,7 @@ case $1 in
     mkdir -p temp
     $MOD/jade < src/index.jade > temp/index.html
     $MOD/rollup -c
-    cp src/hero.png temp/hero.png
+    cp src/*.png temp
     zip -rj archive temp/*
     node checkSize.js
     ;;

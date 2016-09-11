@@ -8,7 +8,7 @@ const removeSmoothing = (canvas) => {
   ctx.imageSmoothingEnabled = false
 }
 
-export default ({screen, heroImage}) => {
+export default ({screen, heroImage, endFunction, attempts = 0}) => {
   const map = mapFactory()
 
   const underground = {
@@ -44,8 +44,8 @@ export default ({screen, heroImage}) => {
     mobs: [
       mobFactory({
         position: {
-          x: Math.floor(Math.random() * 300) * 32,
-          y: Math.floor(Math.random() * 150) * 32
+          x: (Math.floor(Math.random() * 200) + 50) * 32,
+          y: (Math.floor(Math.random() * 100) + 25) * 32
         },
         image: heroImage
       })
@@ -118,6 +118,8 @@ export default ({screen, heroImage}) => {
     camera,
     map,
     layers,
-    io
+    io,
+    endFunction,
+    attempts
   }
 }

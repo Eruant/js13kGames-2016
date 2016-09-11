@@ -3,6 +3,9 @@ import canvasFactory from './canvas'
 import updateFactory from './update'
 import renderFactory from './render'
 import stateFactory from './state'
+import fontFactory from './font'
+
+let game
 
 const screen = canvasFactory()
 
@@ -11,17 +14,84 @@ screen.setSize({
   height: 400
 })
 
-const heroImage = window.document.createElement('img')
-heroImage.src = 'hero.png'
+const assets = [
+  {
+    name: 'hero',
+    src: 'hero.png',
+    loaded: false,
+    el: window.document.createElement('img')
+  },
+  {
+    name: 'font',
+    src: 'font.png',
+    loaded: false,
+    el: window.document.createElement('img')
+  }
+]
 
-const state = stateFactory({screen, heroImage})
+const font = fontFactory({
+  fontImage: assets[1].el
+})
+
+const state = stateFactory({
+  screen,
+  heroImage: assets[0].el,
+  endFunction: (attempts) => {
+    game.stop()
+
+    // need to wait for next frame to render
+    setTimeout(() => {
+      const ctx = screen.getContext()
+      ctx.fillStyle = 'hsl(180, 20%, 50%)'
+      ctx.fillRect(0, 0, screen.getWidth(), screen.getHeight())
+
+      font.draw({ctx, position: {x: 10, y: 10}, text: 'treasure hunt'})
+      font.draw({ctx, position: {x: 10, y: 50}, text: 'well done you found it'})
+      font.draw({ctx, position: {x: 10, y: 70}, text: `you dug ${attempts} holes`})
+    }, 0)
+  }
+})
 
 const update = updateFactory(state)
 const render = renderFactory(state)
 
-const game = loop({update, render})
+game = loop({update, render})
 
-heroImage.onload = () => {
-  game.start()
+const renderStartScreen = () => {
+  const ctx = screen.getContext()
+  ctx.imageSmoothingEnabled = false
+
+  ctx.fillStyle = 'hsl(180, 20%, 50%)'
+  ctx.fillRect(0, 0, screen.getWidth(), screen.getHeight())
+
+  font.draw({ctx, position: {x: 10, y: 10}, text: 'treasure hunt'})
+  font.draw({ctx, position: {x: 10, y: 50}, text: 'use the arrow keys to move and z to dig'})
+  font.draw({ctx, position: {x: 10, y: 70}, text: 'red icons indicate you are getting closer'})
+  font.draw({ctx, position: {x: 10, y: 90}, text: 'blue icons indicate you are further away'})
+  font.draw({ctx, position: {x: 10, y: 130}, text: 'press any key to begin'})
+
+  let pressAnyKeyListener
+
+  pressAnyKeyListener = () => {
+    window.document.removeEventListener('keydown', pressAnyKeyListener)
+    game.start()
+  }
+
+  window.document.addEventListener('keydown', pressAnyKeyListener)
 }
 
+const isLoadComplete = () => {
+  const itemsLoaded = assets.filter(asset => asset.loaded).length
+  const totalItems = assets.length
+  if (itemsLoaded === totalItems) {
+    renderStartScreen()
+  }
+}
+
+assets.forEach(asset => {
+  asset.el.src = asset.src
+  asset.el.onload = () => {
+    asset.loaded = true
+    isLoadComplete()
+  }
+})
