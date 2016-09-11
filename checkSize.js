@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs')
 const stats = fs.statSync('archive.zip')
 const sizeInBytes = stats.size

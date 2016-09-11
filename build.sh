@@ -11,11 +11,11 @@ case $1 in
     $MOD/rollup -c
     cp src/*.png temp
     zip -rj archive temp/*
-    node checkSize.js
+    ./checkSize.js
     ;;
   watch)
     $MOD/nodemon -e jade --ignore temp -x "$MOD/jade < src/index.jade > temp/index.html" & \
-      $MOD/nodemon -e js --ignore temp -x "$MOD/rollup -c && node checkSize.js"
+      $MOD/nodemon -e js --ignore temp -x "$MOD/rollup -c && ./checkSize.js"
     ;;
   *)
     echo "usage: build [build|watch]"
