@@ -63,6 +63,7 @@ export default ({position, image}) => {
     previousPosition: Object.assign({}, position),
     targetPosition: Object.assign({}, position),
     direction: 'EAST',
-    action: null
+    action: null,
+    frame: 0
   })
 }

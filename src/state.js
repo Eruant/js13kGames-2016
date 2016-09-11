@@ -44,8 +44,8 @@ export default ({screen, heroImage}) => {
     mobs: [
       mobFactory({
         position: {
-          x: 0,
-          y: 0
+          x: Math.floor(Math.random() * 300) * 32,
+          y: Math.floor(Math.random() * 150) * 32
         },
         image: heroImage
       })

@@ -25,45 +25,67 @@ export default ({screen, camera, layers, map, player}) => {
 
     // clear previous position
     mobs.forEach(mob => {
-      mobContext.clearRect(mob.previousPosition.x - 32, mob.previousPosition.y - 32, 64, 64)
+      mobContext.clearRect(mob.previousPosition.x - 32, mob.previousPosition.y - 50, 64, 150)
     })
 
     mobs.forEach(mob => {
+      const frame = Math.floor(mob.frame)
+
       if (mob.action) {
-        mobContext.fillStyle = '#f66'
-        mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
+        mobContext.drawImage(
+          mob.image,
+          (frame * 8) + 144, 0, 8, 32,
+          mob.position.x + 8, mob.position.y - 32, 16, 64
+        )
         return
       }
 
-      mobContext.drawImage(mob.image, 0, 0, 8, 32, mob.position.x + 8, mob.position.y - 32, 16, 64)
-
-      // mobContext.fillStyle = '#333'
-      // mobContext.fillRect(mob.position.x, mob.position.y, 32, 32)
-      mobContext.fillStyle = '#fff'
       switch (mob.direction) {
         case 'NORTH':
-          mobContext.fillRect(mob.position.x + 14, mob.position.y, 4, 4)
+          mobContext.drawImage(
+            mob.image,
+            (frame * 8) + 64, 0, 8, 32,
+            mob.position.x + 8, mob.position.y - 32, 16, 64
+          )
           break
         case 'SOUTH':
-          mobContext.fillRect(mob.position.x + 14, mob.position.y + 28, 4, 4)
+          mobContext.save()
+          mobContext.translate(mob.position.x + 8, mob.position.y - 32)
+          mobContext.drawImage(
+            mob.image,
+            (frame * 8) + 64, 0, 8, 32,
+            0, 0, 16, 64
+          )
+          mobContext.restore()
           break
         case 'WEST':
-          mobContext.fillRect(mob.position.x, mob.position.y + 14, 4, 4)
+        case 'NORTH-WEST':
+        case 'SOUTH-WEST':
+          mobContext.save()
+          mobContext.translate(mob.position.x + 8 + 16, mob.position.y - 32)
+          mobContext.scale(-1, 1)
+          mobContext.drawImage(
+            mob.image,
+            (frame * 8), 0, 8, 32,
+            0, 0, 16, 64
+          )
+          mobContext.restore()
           break
         case 'EAST':
-          mobContext.fillRect(mob.position.x + 28, mob.position.y + 14, 4, 4)
-          break
-        case 'NORTH-WEST':
-          mobContext.fillRect(mob.position.x, mob.position.y, 4, 4)
-          break
         case 'NORTH-EAST':
-          mobContext.fillRect(mob.position.x + 28, mob.position.y, 4, 4)
-          break
-        case 'SOUTH-WEST':
-          mobContext.fillRect(mob.position.x, mob.position.y + 28, 4, 4)
-          break
         case 'SOUTH-EAST':
-          mobContext.fillRect(mob.position.x + 28, mob.position.y + 28, 4, 4)
+          mobContext.drawImage(
+            mob.image,
+            (frame * 8), 0, 8, 32,
+            mob.position.x + 8, mob.position.y - 32, 16, 64
+          )
+          break
+        default:
+          mobContext.drawImage(
+            mob.image,
+            ((frame % 2) * 8) + 128, 0, 8, 32,
+            mob.position.x + 8, mob.position.y - 32, 16, 64
+          )
           break
       }
     })

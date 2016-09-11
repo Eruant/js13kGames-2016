@@ -10,6 +10,11 @@ export default ({screen, camera, layers, io}) => {
     const input = io.getInput()
     const speed = 2
 
+    player.frame += 0.2
+    if (player.frame > 7) {
+      player.frame = 0
+    }
+
     // set speed.x if not in resting position
     if (player.targetPosition.x !== player.position.x) {
       player.speed.x = (player.targetPosition.x < player.position.x) ? -speed : speed
@@ -22,6 +27,10 @@ export default ({screen, camera, layers, io}) => {
       player.speed.y = (player.targetPosition.y < player.position.y) ? -speed : speed
     } else {
       player.speed.y = 0
+    }
+
+    if (player.speed.x === 0 && player.speed.y === 0) {
+      player.direction = null
     }
 
     // if player not moving take an input
@@ -156,14 +165,14 @@ export default ({screen, camera, layers, io}) => {
 
         if (distanceAway === 0) {
           let hud = hudFactory({
-              type: 'status-win',
-              position: {
-                x: player.position.x,
-                y: player.position.y
-              }
-            })
+            type: 'status-win',
+            position: {
+              x: player.position.x,
+              y: player.position.y
+            }
+          })
 
-           for (let i = 0, len = 20; i < len; i++) {
+          for (let i = 0, len = 20; i < len; i++) {
             if (layers.hud.elements[i] === null) {
               layers.hud.elements[i] = hud
               break
