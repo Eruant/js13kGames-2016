@@ -2,6 +2,7 @@ import mobFactory from './mob'
 import cameraActions from './camera'
 import mapFactory from './map'
 import ioFactory from './io'
+import soundFactory from './sound'
 
 const removeSmoothing = (canvas) => {
   const ctx = canvas.getContext('2d')
@@ -120,6 +121,7 @@ export default ({screen, heroImage, endFunction, attempts = 0}) => {
     layers,
     io,
     endFunction,
-    attempts
+    attempts,
+    sfx: soundFactory()
   }
 }

@@ -1,7 +1,7 @@
 import particleFactory from './particle'
 import hudFactory from './hud'
 
-export default ({screen, camera, layers, io, endFunction, attempts}) => {
+export default ({screen, camera, layers, io, endFunction, attempts, sfx}) => {
   return () => {
     // - Player ----------------------------------------------------------------
     // const [player, ...mobs] = layers.mobs.mobs
@@ -62,6 +62,8 @@ export default ({screen, camera, layers, io, endFunction, attempts}) => {
       } else if (input.direction.x > 0 && input.direction.y > 0) {
         player.direction = 'SOUTH-EAST'
       }
+
+      sfx.walk()
     }
 
     // move the player
@@ -116,6 +118,7 @@ export default ({screen, camera, layers, io, endFunction, attempts}) => {
           }
         }
         player.action.stepsToComplete--
+        sfx.dig()
       } else {
         attempts += 1
         const treasurePosition = layers.treasure.position
