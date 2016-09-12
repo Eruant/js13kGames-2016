@@ -141,6 +141,7 @@ export default ({screen, camera, layers, io, endFunction, attempts, sfx}) => {
                 y: player.position.y
               }
             })
+            sfx.cooler()
           } else if (lastGuess > distanceAway) {
             hud = hudFactory({
               type: 'status-warmer',
@@ -149,6 +150,7 @@ export default ({screen, camera, layers, io, endFunction, attempts, sfx}) => {
                 y: player.position.y
               }
             })
+            sfx.warmer()
           } else if (distanceAway !== 0) {
             hud = hudFactory({
               type: 'status-same',

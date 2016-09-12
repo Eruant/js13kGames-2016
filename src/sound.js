@@ -4,6 +4,7 @@ export default () => {
   let active = false
 
   const audioContext = new AudioContext()
+  const hudContext = new AudioContext()
 
   const noiseBuffer = () => {
     const bufferSize = audioContext.sampleRate
@@ -52,7 +53,8 @@ export default () => {
 
       const noiseFilter = audioContext.createBiquadFilter()
       noiseFilter.type = 'highpass'
-      noiseFilter.frequency.value = 1000
+      // noiseFilter.frequency.value = 1000
+      noiseFilter.frequency.value = 5000
       noise.connect(noiseFilter)
 
       const noiseEnvelope = audioContext.createGain()
@@ -69,7 +71,6 @@ export default () => {
       oscEnvelope.connect(audioContext.destination)
 
       noiseEnvelope.gain.setValueAtTime(1, startTime)
-      // TODO figure out why this fails here
       noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, startTime + 0.2)
 
       noise.start(startTime)
@@ -89,8 +90,46 @@ export default () => {
     }
   }
 
+  const warmer = () => {
+    const startTime = hudContext.currentTime
+    const oscillator = hudContext.createOscillator()
+    const gain = hudContext.createGain()
+
+    oscillator.connect(gain)
+    gain.connect(hudContext.destination)
+
+    gain.gain.setValueAtTime(1, startTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5)
+
+    oscillator.frequency.setValueAtTime(100, startTime)
+    oscillator.frequency.exponentialRampToValueAtTime(1000, startTime + 0.5)
+
+    oscillator.start(startTime)
+    oscillator.stop(startTime + 0.5)
+  }
+
+  const cooler = () => {
+    const startTime = hudContext.currentTime
+    const oscillator = hudContext.createOscillator()
+    const gain = hudContext.createGain()
+
+    oscillator.connect(gain)
+    gain.connect(hudContext.destination)
+
+    gain.gain.setValueAtTime(1, startTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5)
+
+    oscillator.frequency.setValueAtTime(1000, startTime)
+    oscillator.frequency.exponentialRampToValueAtTime(100, startTime + 0.5)
+
+    oscillator.start(startTime)
+    oscillator.stop(startTime + 0.5)
+  }
+
   return {
     dig,
-    walk
+    walk,
+    warmer,
+    cooler
   }
 }
