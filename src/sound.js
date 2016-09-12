@@ -126,10 +126,29 @@ export default () => {
     oscillator.stop(startTime + 0.5)
   }
 
+  const fall = () => {
+    const startTime = hudContext.currentTime
+    const oscillator = hudContext.createOscillator()
+    const gain = hudContext.createGain()
+
+    oscillator.connect(gain)
+    gain.connect(hudContext.destination)
+
+    gain.gain.setValueAtTime(1, startTime)
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 5)
+
+    oscillator.frequency.setValueAtTime(200, startTime)
+    oscillator.frequency.exponentialRampToValueAtTime(0.01, startTime + 5)
+
+    oscillator.start(startTime)
+    oscillator.stop(startTime + 5)
+  }
+
   return {
     dig,
     walk,
     warmer,
-    cooler
+    cooler,
+    fall
   }
 }

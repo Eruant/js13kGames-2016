@@ -45,9 +45,15 @@ const state = stateFactory({
       ctx.fillStyle = 'hsl(180, 20%, 50%)'
       ctx.fillRect(0, 0, screen.getWidth(), screen.getHeight())
 
-      font.draw({ctx, position: {x: 10, y: 10}, text: 'treasure hunt'})
-      font.draw({ctx, position: {x: 10, y: 50}, text: 'well done you found it'})
-      font.draw({ctx, position: {x: 10, y: 70}, text: `you dug ${attempts} holes`})
+      if (attempts === null) {
+        font.draw({ctx, position: {x: 10, y: 10}, text: 'treasure hunt'})
+        font.draw({ctx, position: {x: 10, y: 50}, text: 'you fell down a hold you dug'})
+        font.draw({ctx, position: {x: 10, y: 70}, text: 'game over'})
+      } else {
+        font.draw({ctx, position: {x: 10, y: 10}, text: 'treasure hunt'})
+        font.draw({ctx, position: {x: 10, y: 50}, text: 'well done you found it'})
+        font.draw({ctx, position: {x: 10, y: 70}, text: `you dug ${attempts} holes`})
+      }
     }, 0)
   }
 })

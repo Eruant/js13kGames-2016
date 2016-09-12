@@ -45,6 +45,11 @@ export default ({screen, camera, layers, io, endFunction, attempts, sfx}) => {
         direction: input.direction
       })
 
+      if (layers.surface.canvas.getContext('2d').getImageData(player.targetPosition.x, player.targetPosition.y, 1, 1).data[3] === 0) {
+        endFunction(null)
+        sfx.fall()
+      }
+
       if (input.direction.x > 0 && input.direction.y === 0) {
         player.direction = 'EAST'
       } else if (input.direction.x < 0 && input.direction.y === 0) {
